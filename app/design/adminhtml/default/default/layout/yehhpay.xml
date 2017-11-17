@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_sales_order_view>
+        <reference name="order_info">
+            <block type="wezz_yehhpay/adminhtml_sales_order_view_info_block" name="yehhpay.order.info.transaction.block" template="wezz/yehhpay/sales/order/view/info.phtml" before="order_history" />
+        </reference>
+    </adminhtml_sales_order_view>
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="addJs">
+                <script>wezz/validation.js</script>
+            </action>
+        </reference>
+    </adminhtml_system_config_edit>
+</layout>

@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<config>
+<sections>
+    <yehhpay translate="label" module="sales">
+        <class>separator-top</class>
+        <label>
+            <![CDATA[<img height="20px" src="/skin/adminhtml/default/default/images/yehhpay/yehhpay-logo.png">]]>
+        </label>
+        <tab>sales</tab>
+        <frontend_type>text</frontend_type>
+        <sort_order>300</sort_order>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>1</show_in_store>
+        <groups>
+            <yehhpay_group translate="label">
+                <label>General</label>
+                <comment>
+                    <![CDATA[
+                    <h3>Yehhpay</h3>
+                    <p>This is our official extension for Magento 1. This extension will enable merchants to accept post delivery payments via Yehhpay to increase their conversion rates. With Yehhpay, merhants can offer their customers an conveynient post delivery payment method and at the same time control credit risks. The extension is developed for <a href="https://yehhpay.nl/" target="_blank">Yehhpay</a> by <a href="https://www.wezz.co/" target="_blank">Wezz e-Commerce</a>.</p>
+                    <h3>Documentation</h3>
+                    Please read our <a target="blank" href="https://www.wezz.co/extensions/yehhpay">documentation and FAQ page</a> before installation and configuration and in case of any questions. </p>
+
+                    <h3>Signup and Authentification</h3>
+                    <p>You can apply for an account with Yehhpay <a href="https://account.postcode.nl/registreer" target="blank">here</a>. After registration you will receive your application key and password.</p>
+                    ]]>
+                </comment>
+                <sort_order>4</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>1</show_in_store>
+                <fields>
+                    <active translate="label">
+                        <label>Enabled</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                        <sort_order>1</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </active>
+                    <payment_mode translate="label">
+                        <label>Payment mode</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>Wezz_Yehhpay_Helper_Mode</source_model>
+                        <sort_order>2</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </payment_mode>
+                    <application_key translate="label">
+                        <label>Application key</label>
+                        <frontend_type>text</frontend_type>
+                        <validate>required-entry</validate>
+                        <sort_order>3</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </application_key>
+                    <application_secret translate="label">
+                        <label>Application secret</label>
+                        <frontend_type>text</frontend_type>
+                        <validate>required-entry</validate>
+                        <sort_order>4</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </application_secret>
+                    <service_identifier translate="label">
+                        <label>Service identifier</label>
+                        <frontend_type>text</frontend_type>
+                        <validate>required-entry validate-length minimum-length-2 maximum-length-16</validate>
+                        <sort_order>5</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </service_identifier>
+                    <min_order_total translate="label comment">
+                        <label>Minimum Order Total</label>
+                        <comment>For orders below this amount this payment method is unavailable.</comment>
+                        <validate>required-entry min-order validate-order-min validate-digits-range digits-range-0-299</validate>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>10</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </min_order_total>
+                    <max_order_total translate="label comment">
+                        <label>Maximum Order Total</label>
+                        <comment>For orders above this amount this payment method is unavailable. Yehhpay does not accept orders over € 300.</comment>
+                        <validate>required-entry max-order validate-order-max validate-digits-range digits-range-1-300</validate>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>11</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </max_order_total>
+                </fields>
+            </yehhpay_group>
+
+            <yehhpay_advanced translate="label">
+                <label>Advanced</label>
+                <sort_order>5</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>1</show_in_store>
+                <fields>
+                    <title translate="label value">
+                        <label>Frontend label</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>6</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </title>
+                    <check_address translate="label">
+                        <label>Check on billing and delivery addresses</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                        <sort_order>1</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </check_address>
+                    <payment_success_status translate="label">
+                        <label>Payment success status</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_order_status</source_model>
+                        <sort_order>7</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </payment_success_status>
+                    <payment_failed_status translate="label">
+                        <label>Payment failed status</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_order_status</source_model>
+                        <sort_order>8</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </payment_failed_status>
+                    <allowspecific translate="label">
+                        <label>Payment from Applicable Countries</label>
+                        <frontend_type>allowspecific</frontend_type>
+                        <sort_order>50</sort_order>
+                        <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </allowspecific>
+                    <specificcountry translate="label">
+                        <label>Payment from Specific Countries</label>
+                        <frontend_type>multiselect</frontend_type>
+                        <sort_order>51</sort_order>
+                        <source_model>adminhtml/system_config_source_country</source_model>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                        <can_be_empty>1</can_be_empty>
+                    </specificcountry>
+                </fields>
+            </yehhpay_advanced>
+
+        </groups>
+    </yehhpay>
+</sections>
+</config>

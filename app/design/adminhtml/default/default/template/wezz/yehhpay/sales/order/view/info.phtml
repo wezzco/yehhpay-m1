@@ -1,0 +1,47 @@
+<?php $transaction = $this->getTransaction() ?>
+
+<?php if ($transaction) { ?>
+<div class="entry-edit box-left">
+    <div class="entry-edit-head">
+        <h4 class="icon-head"><?php echo $this->__('Yehhpay Transaction') ?></h4>
+    </div>
+    <fieldset>
+        <img src="<?php echo $this->getSkinUrl('images/yehhpay/yehhpay-logo.png') ?>" />
+        <div id="yehhpay_info_block">
+
+            <?php echo $this->__('Id') ?>: <?php echo $transaction['transactionId'] ?>
+            <br/>
+            <?php echo $transaction['consumerStatus'] ?>
+            <br/>
+            <?php echo $transaction['stateStatus'] ?>
+            <br/>
+            <?php echo $this->__('Cost') ?>: <?php echo $transaction['order']['cost'] ?>
+            <br/>
+
+            <?php if (isset($transaction['urlSuspend'])) { ?>
+            <form method="post"
+                  action="<?php echo $transaction['urlSuspend'] ?>">
+                    <input class="input-text" type="date"
+                           name="suspendDate"
+                           required
+                           value="<?php echo $transaction['resumeDate'] ?>"
+                           min="<?php echo $transaction['start'] ?>"
+                           max="<?php echo $transaction['end'] ?> "/>
+                    <br />
+                    <button type="submit"><?php echo $this->__('Suspend transaction') ?></button>
+            </form>
+            <?php } ?>
+            <br/>
+
+
+            <?php if (isset($transaction['urlResume'])) { ?>
+                <a href="<?php echo $transaction['urlResume'] ?>">
+                    <?php echo $this->__('Resume transaction') ?>
+                </a>
+            <?php } ?>
+
+        </div>
+    </fieldset>
+</div>
+<div class="clear"></div>
+<?php } ?>

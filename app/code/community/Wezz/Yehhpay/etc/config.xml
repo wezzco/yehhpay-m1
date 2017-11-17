@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Wezz_Yehhpay>
+            <version>1.0.0</version>
+        </Wezz_Yehhpay>
+    </modules>
+
+    <global>
+        <payment>
+            <rewrite>
+                <method_purchaseorder>Wezz_Yehhpay_Model_Payment</method_purchaseorder>
+            </rewrite>
+        </payment>
+
+        <models>
+            <wezz_yehhpay>
+                <class>Wezz_Yehhpay_Model</class>
+            </wezz_yehhpay>
+        </models>
+
+        <resources>
+            <yehhpay_setup>
+                <setup>
+                    <module>Wezz_Yehhpay</module>
+                </setup>
+            </yehhpay_setup>
+        </resources>
+
+        <helpers>
+            <wezz_yehhpay>
+                <class>Wezz_Yehhpay_Helper</class>
+            </wezz_yehhpay>
+        </helpers>
+        <blocks>
+            <wezz_yehhpay>
+                <class>Wezz_Yehhpay_Block</class>
+            </wezz_yehhpay>
+        </blocks>
+    </global>
+
+    <default>
+
+            <yehhpay>
+                <yehhpay_group>
+                    <min_order_total>0</min_order_total>
+                    <max_order_total>300</max_order_total>
+                </yehhpay_group>
+                <yehhpay_advanced>
+                    <check_address>1</check_address>
+                    <title>Pay afterwards with Yehhpay</title>
+                    <payment_success_status>processing</payment_success_status>
+                    <payment_failed_status>pending</payment_failed_status>
+                </yehhpay_advanced>
+            </yehhpay>
+
+        <payment>
+            <yehhpay>
+                <model>wezz_yehhpay/payment</model>
+                <active>1</active>
+                <code>yehhpay</code>
+            </yehhpay>
+        </payment>
+
+    </default>
+
+    <frontend>
+        <routers>
+            <!-- the <helloworld> tagname appears to be arbitrary, but by
+            convention is should match the frontName tag below-->
+            <wezz_yehhpay>
+                <use>standard</use>
+                <args>
+                    <module>Wezz_Yehhpay</module>
+                    <frontName>yehhpay</frontName>
+                </args>
+            </wezz_yehhpay>
+        </routers>
+    </frontend>
+
+    <adminhtml>
+
+        <layout>
+            <updates>
+                <wezz_yehhpay>
+                    <file>yehhpay.xml</file>
+                </wezz_yehhpay>
+            </updates>
+        </layout>
+
+        <translate>
+            <modules>
+                <wezz_yehhpay>
+                    <files>
+                        <default>Wezz_Yehhpay.csv</default>
+                    </files>
+                </wezz_yehhpay>
+            </modules>
+        </translate>
+
+                <events>
+                    <sales_order_save_after>
+                        <observers>
+                            <wezz_yehhpay>
+                                <class>wezz_yehhpay/adminhtml_observer</class>
+                                <method>changeOrder</method>
+                            </wezz_yehhpay>
+                        </observers>
+                    </sales_order_save_after>
+
+                    <core_block_abstract_to_html_after>
+                        <observers>
+                            <wezz_yehhpay_order_view_info>
+                                <class>wezz_yehhpay/adminhtml_observer</class>
+                                <method>getYehhpayTransactionInfo</method>
+                            </wezz_yehhpay_order_view_info>
+                        </observers>
+                    </core_block_abstract_to_html_after>
+
+                    <sales_order_payment_cancel_creditmemo>
+                        <observers>
+                            <wezz_yehhpay_refund_transaction>
+                                <class>wezz_yehhpay/adminhtml_observer</class>
+                                <method>refundTransaction</method>
+                            </wezz_yehhpay_refund_transaction>
+                        </observers>
+                    </sales_order_payment_cancel_creditmemo>
+
+                </events>
+
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <yehhpay>
+                                            <title>Yehhpay</title>
+                                        </yehhpay>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+
+
+    </adminhtml>
+
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <yehhpay>
+                                        <title>Yehhpay</title>
+                                    </yehhpay>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
