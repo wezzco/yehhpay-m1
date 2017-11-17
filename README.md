@@ -19,9 +19,8 @@ https://www.wezz.co/extensions/yehhpay
 
 __API Documentation__
 
-This extension used Yehhpay's Merchant API. Documentation of the API can be found on
+This extension uses Yehhpay's Merchant API. Documentation of the API can be found on
 https://api.yehhpay.nl/documentation/merchant/api
-
 
 # Installation
 
@@ -53,19 +52,7 @@ Upload all your files to the root directory of your Magento installation. Make s
 
 When finished log out of the admin and log back in.
 
-### 2.2 Installation through SSH
-
-Install your files through ssh using the commands below:
-
-`
-~user: cd /path/to/your/magentostore/
-~user: run fancy install -code
-~user: maybesome more/commands/here/
-`
-
-When finished log out of the admin and log back in.
-
-### 2.3 Installation through Composer
+### 2.2 Installation through Composer
 
 Make sure you have set up [composer to work](https://github.com/Cotya/magento-composer-installer) with your Magento install.
 `
@@ -84,27 +71,29 @@ __System__ -> __Configuration__ -> __Sales__ -> Yehhpay
 
 Fill in the following fields to configure your Yehhpay extension.
 
+
+#### General
 | Field | Explanation |
 | :--- | :--- |
 | Enabled | Option to enable/disable the module on your Magento store |
 | Payment mode | Switch between test and live payment mode |
 | Application key | Please find your Application key in your Yehhpay account |
 | Application secret | Please find your Application secret in your Yehhpay account |
+| Minimum Order Total | The minimum order amount that can be payed with Yehhpay |
+| Maximum Order Total | The maximum order amount that can be payed with Yehhpay |
+
+#### Advanced
+
+| Field | Explanation |
+| :--- | :--- |
+| Check on billing and delivery addresses | Yehhpay requires customers shippings and invoice address to be the same, must be set to __yes__. |
 | Service identifier | Please find your Application identifier in your Yehhpay account |
 | Frontend label | The name of the Yehhpay Payment method in the Magento checkout |
 | Payment success status | The status of the order when the payment module returns status success |
 | Payment failed status | The status of the order when the payment module returns status failed |
 | Payment from Specific Countries | Select specific country from with customers can pay with Yehhpay, leave empty for __all countries__ |
-| Minimum Order Total | The minimum order amount that can be payed with Yehhpay |
-| Maximum Order Total | The maximum order amount that can be payed with Yehhpay |
 
 ## Troubleshooting
 
 
-__I Can’t find the extension in the Magento Admin Configuration__
-
-Clear your cache and logout and login to your Magento Admin.
-
-__The payment method doesn't show up in the checkout__
-
-Check you configuration details.
+For __Frequently Asked Questions__ please visit [https://www.wezz.co/extensions/yehhpay](https://www.wezz.co/extensions/yehhpay).
