@@ -13,19 +13,9 @@
         <show_in_website>1</show_in_website>
         <show_in_store>1</show_in_store>
         <groups>
-            <yehhpay_group translate="label">
+            <yehhpay_group translate="label comment">
                 <label>General</label>
-                <comment>
-                    <![CDATA[
-                    <h3>Yehhpay</h3>
-                    <p>This is our official extension for Magento 1. This extension will enable merchants to accept post delivery payments via Yehhpay to increase their conversion rates. With Yehhpay, merhants can offer their customers an conveynient post delivery payment method and at the same time control credit risks. The extension is developed for <a href="https://yehhpay.nl/" target="_blank">Yehhpay</a> by <a href="https://www.wezz.co/" target="_blank">Wezz e-Commerce</a>.</p>
-                    <h3>Documentation</h3>
-                    Please read our <a target="blank" href="https://www.wezz.co/extensions/yehhpay">documentation and FAQ page</a> before installation and configuration and in case of any questions. </p>
-
-                    <h3>Signup and Authentification</h3>
-                    <p>You can apply for an account with Yehhpay <a href="https://account.postcode.nl/registreer" target="blank">here</a>. After registration you will receive your application key and password.</p>
-                    ]]>
-                </comment>
+                <comment><![CDATA[<h3>Need help?</h3><p>This is the official Yehhpay extension for Magento 1. The extension is developed by <a href='https://www.wezz.nl/' target='_blank'>Wezz e-Commerce</a>. Do you need help? Read our documentation, FAQ or ask us a question. </p><h3>Signup and Authentification</h3><p>Don't have an account yet? Obtain your account credentials here. (new window)</p>]]></comment>
                 <sort_order>4</sort_order>
                 <show_in_default>1</show_in_default>
                 <show_in_website>1</show_in_website>
@@ -162,7 +152,6 @@
                     </specificcountry>
                 </fields>
             </yehhpay_advanced>
-
         </groups>
     </yehhpay>
 </sections>

@@ -188,6 +188,34 @@ class Wezz_Yehhpay_Model_Api_Data
     }
 
     /**
+     * Method to get order id by transaction id from
+     * sales_flat_order_payment table
+     *
+     * @param int $transactionId
+     * @return int | boolean
+     */
+    public function getOrderByTransactionId($transactionId)
+    {
+        /**
+         * Make query to 'sales_flat_order_payment' to get order id from data collection
+         */
+        $collection = Mage::getModel('sales/order')->getCollection();
+        $collection->getSelect()->join(array('payment' => 'sales_flat_order_payment'), 'payment.parent_id = main_table.entity_id',
+            array(
+                'payment_method' => 'payment.method',
+                'yehhpay_transaction_id' => 'payment.yehhpay_transaction_id'
+            ));
+        $collection->addFieldToFilter('payment.yehhpay_transaction_id', $transactionId);
+
+        $collectionData = $collection->getFirstItem()->getData();
+
+        $orderId =  isset($collectionData['increment_id']) ? $collectionData['increment_id'] : false;
+
+        return $orderId;
+
+    }
+
+    /**
      * Method to get transaction by increment id
      *
      * @param $orderId
@@ -259,8 +287,9 @@ class Wezz_Yehhpay_Model_Api_Data
      * Method to create invoice
      *
      * @param $orderId
+     * @param $transactionId
      */
-    public function createInvoice($orderId)
+    public function createInvoice($orderId, $transactionId)
     {
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
@@ -270,8 +299,14 @@ class Wezz_Yehhpay_Model_Api_Data
 
         $capture = Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE;
         $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+        $invoice->capture();
         $invoice->setRequestedCaptureCase($capture);
+
+        $invoice->setTransactionId($transactionId);
+        $invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_PAID);
+
         $invoice->register();
+
 
         $transaction = Mage::getModel('core/resource_transaction')
             ->addObject($invoice)
@@ -325,5 +360,4 @@ class Wezz_Yehhpay_Model_Api_Data
             return false;
         }
     }
-
 }

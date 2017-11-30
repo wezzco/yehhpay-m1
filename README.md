@@ -1,7 +1,7 @@
 # Yehhpay Magento 1 Extension
 
 This extension will enable merchants to accept post delivery payments via Yehhpay to increase their conversion rates.
-With Yehhpay, merhants can offer their customers an convenient post delivery payment method and at the same time control credit risks.
+With Yehhpay, merchants can offer their customers an convenient post delivery payment method and at the same time control credit risks.
 
 When installing this extension, an additional payment method will be added to your checkout.
 

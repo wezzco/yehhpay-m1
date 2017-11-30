@@ -60,6 +60,8 @@ class Wezz_Yehhpay_Model_Api_Client
             $result = $connection->call($method, $apiData);
 
             return $result;
+
+
         } catch (Mage_Core_Exception $e) {
             $response = $e->getMessage();
             return $response;
@@ -67,6 +69,7 @@ class Wezz_Yehhpay_Model_Api_Client
             $response = Mage::helper('wezz_yehhpay/data')->__("Error: System error during request");
             return $response;
         }
+
     }
 
     /**

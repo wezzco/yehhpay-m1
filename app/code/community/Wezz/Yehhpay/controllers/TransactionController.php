@@ -47,14 +47,12 @@ class Wezz_Yehhpay_TransactionController extends Mage_Core_Controller_Front_Acti
              * Check transaction status and update order
              */
             $result = Mage::getModel('wezz_yehhpay/api_transaction')->notify($orderId);
-            if ($result) {
 
+            if ($result) {
                 /**
                  * Redirect to checkout success page
                  */
                 $this->_redirect('checkout/onepage/success');
-
-
             } else {
 
                 $message = Mage::helper('wezz_yehhpay/data')->__("Yehhpay transaction is not completed and approved. Please try to re-order.");
@@ -73,13 +71,18 @@ class Wezz_Yehhpay_TransactionController extends Mage_Core_Controller_Front_Acti
      */
     public function notifyAction()
     {
-        $orderId = $this->getRequest()->get('order');
+        if (!isset($_POST['transactionId']))
+        {
+            throw new \Exception('Missing transaction id in notification callback.');
+        }
 
-        if ($orderId) {
+        $transactionId = (int) $_POST['transactionId'];
+
+        if ($transactionId) {
             /***
              * Check transaction status and update order
              */
-            Mage::getModel('wezz_yehhpay/api_transaction')->notify($orderId);
+            Mage::getModel('wezz_yehhpay/api_transaction')->hook($transactionId);
         }
     }
 }

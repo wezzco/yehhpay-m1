@@ -117,15 +117,14 @@
                         </observers>
                     </core_block_abstract_to_html_after>
 
-                    <sales_order_payment_cancel_creditmemo>
+                    <sales_order_creditmemo_save_after>
                         <observers>
-                            <wezz_yehhpay_refund_transaction>
+                            <wezz_yehhpay_order_view_info>
                                 <class>wezz_yehhpay/adminhtml_observer</class>
                                 <method>refundTransaction</method>
-                            </wezz_yehhpay_refund_transaction>
+                            </wezz_yehhpay_order_view_info>
                         </observers>
-                    </sales_order_payment_cancel_creditmemo>
-
+                    </sales_order_creditmemo_save_after>
                 </events>
 
         <acl>

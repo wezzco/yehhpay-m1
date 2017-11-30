@@ -74,7 +74,24 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
      */
     public function transactionSuspend($transactionId, $suspendDate, $orderId) {
 
-        $suspendDate = Mage::helper('core')->formatDate($suspendDate, 'short', true);
+        $datetime = new \DateTime($suspendDate);
+
+        /**
+         * Compare new suspend date with current date in timestamp format
+         */
+        $suspendTimestamp = $datetime->getTimestamp();
+        if ($suspendTimestamp < time()) {
+            return false;
+        }
+
+        /**
+         * Format suspend date to ISO8601
+         */
+        $suspendDate = $datetime->format(\DateTime::ISO8601);
+
+        // comment old approach to format date
+        //$suspendDate = Mage::helper('core')->formatDate($suspendDate, 'short', true);
+
         $data = array($transactionId, $suspendDate);
 
         $result = $this->client->callApi('Transaction.suspend', $data);
@@ -125,9 +142,9 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
     {
         $data = array($transactionId, $amount);
         $result = $this->client->callApi('Refund.create', $data);
+
         return $result;
     }
-
 
     /**
      * Method to check suspended status of transaction
@@ -178,9 +195,10 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
      * Transaction is able to refund only if consumer pay for transaction
      *
      * @param $orderId
+     * @param $amount
      * @return bool
      */
-    public function checkTransactionIsRefundAbleAndRefund($orderId)
+    public function checkTransactionIsRefundAbleAndRefund($orderId, $amount)
     {
         /**
          * Get transaction id by orderId
@@ -204,16 +222,12 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
          * Make API request to refund transaction
          */
         if ($result['state']['canCreateRefund']) {
-            if (isset($result['order']['amount']) && $result['order']['amount'] > 0) {
-                $this->refundCreate($transactionId, $result['order']['amount']);
-            }
+            $this->refundCreate($transactionId, $amount);
         }
 
-        /**
-         * Make API request to cancel transaction
-         */
         if ($result['state']['canBeCanceled']) {
-            $this->transactionCancel($transactionId);
+            // this block is commented because not need to do transaction cancel
+           // $this->transactionCancel($transactionId);
         }
     }
 
@@ -225,10 +239,43 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
      */
     public function notify($orderId)
     {
+        $transactionId = false;
+
         /**
          * Check current transaction status
          */
         $transactionResult = $this->checkCurrentTransaction($orderId);
+
+        if ($orderId) {
+            $transactionId = $this->getDataModel()->getTransactionIdByIncrementId($orderId);
+        }
+
+        /**
+         * Update status
+         */
+        $this->getDataModel()->setOrderStatus($transactionResult, $orderId);
+
+        if ($transactionResult && $transactionId) {
+            $this->getDataModel()->createInvoice($orderId, $transactionId);
+        }
+
+        return $transactionResult;
+    }
+
+    /**
+     * Callback notify listener from API
+     *
+     * @param $transactionId
+     * @return boolean
+     */
+    public function hook($transactionId)
+    {
+        /**
+         * Check current transaction status
+         */
+        $orderId = $this->getDataModel()->getOrderByTransactionId($transactionId);
+
+        $transactionResult = $this->checkCurrentTransaction($orderId, $transactionId);
 
         /**
          * Update status
@@ -236,11 +283,12 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
         $this->getDataModel()->setOrderStatus($transactionResult, $orderId);
 
         if ($transactionResult) {
-            $this->getDataModel()->createInvoice($orderId);
+            $this->getDataModel()->createInvoice($orderId, $transactionId);
         }
 
         return $transactionResult;
     }
+
 
     /**
      * Method to get current transaction
@@ -300,10 +348,12 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
 
         $this->transaction['orderId'] = $this->order->getRealOrderId();
         $this->transaction['resumeDate'] = $this->order->getPayment()->getYehhpayTransactionDate();
+        $this->transaction['showCost'] = false;
 
         if (isset($result['state'])) {
             if (isset($result['state']['hasBeenApprovedByConsumer']) && $result['state']['hasBeenApprovedByConsumer']) {
                 $this->transaction['consumerStatus'] = Mage::helper('wezz_yehhpay/data')->__("Approved by consumer and Yehhpay");
+                $this->transaction['showCost'] = true;
             } else {
                 $this->transaction['consumerStatus'] = Mage::helper('wezz_yehhpay/data')->__("Not approved by consumer or Yehhpay");
             }
@@ -322,14 +372,17 @@ class Wezz_Yehhpay_Model_Api_Transaction extends Mage_Core_Model_Abstract
      * Method to check current transaction
      *
      * @param $orderId
+     * @param $transactionId
      * @return bool
      */
-    private function checkCurrentTransaction($orderId)
+    private function checkCurrentTransaction($orderId, $transactionId = false)
     {
-        $transactionId = $this->getDataModel()->getTransactionIdByIncrementId($orderId);
-
         if (!$transactionId) {
-            return false;
+            $transactionId = $this->getDataModel()->getTransactionIdByIncrementId($orderId);
+
+            if (!$transactionId) {
+                return false;
+            }
         }
 
         /**

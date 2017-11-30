@@ -15,8 +15,11 @@
             <br/>
             <?php echo $transaction['stateStatus'] ?>
             <br/>
-            <?php echo $this->__('Cost') ?>: <?php echo $transaction['order']['cost'] ?>
-            <br/>
+
+            <?php if ($transaction['showCost']) { ?>
+                <?php echo $this->__('Cost') ?>: <?php echo $transaction['order']['cost'] ?>
+                <br/>
+            <?php } ?>
 
             <?php if (isset($transaction['urlSuspend'])) { ?>
             <form method="post"
@@ -32,7 +35,6 @@
             </form>
             <?php } ?>
             <br/>
-
 
             <?php if (isset($transaction['urlResume'])) { ?>
                 <a href="<?php echo $transaction['urlResume'] ?>">

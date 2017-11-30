@@ -27,8 +27,26 @@ class Wezz_Yehhpay_Model_Adminhtml_Observer
                     $transport->setHtml($html);
                 }
             }
-
         }
+    }
+
+    /**
+     * Get refund transaction
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function refundTransaction(Varien_Event_Observer $observer)
+    {
+        $creditMemo = $observer->getCreditmemo();
+
+        if ($creditMemo) {
+            Mage::getModel('wezz_yehhpay/api_transaction')->checkTransactionIsRefundAbleAndRefund(
+                $creditMemo->getOrderId(),
+                (string) $creditMemo->getGrandTotal()
+            );
+        }
+
+        return $creditMemo;
     }
 
     /**
@@ -48,13 +66,7 @@ class Wezz_Yehhpay_Model_Adminhtml_Observer
             Mage::getModel('wezz_yehhpay/api_transaction')->checkTransactionIsSuspendedAndResume($order->getId(),
                 $order->getRealOrderId());
         }
-        /**
-         * If current state of order is closed and order has credit memos,
-         * so we create refund for Yehhpay according to credit memos
-         * and cancel transaction
-         */
-        else if ($order->getState() == $order::STATE_CLOSED && $order->hasCreditmemos()) {
-            Mage::getModel('wezz_yehhpay/api_transaction')->checkTransactionIsRefundAbleAndRefund($order->getId());
-        }
+
+        return $order;
     }
 }

@@ -8,12 +8,14 @@
 class Wezz_Yehhpay_Model_Payment extends Mage_Payment_Model_Method_Abstract
 {
     protected $_code = 'yehhpay';
-    protected $_title = 'FF';
+    protected $_title = 'Yehhpay';
 
     protected $_isInitializeNeeded      = true;
     protected $_canCapture              = true;
     protected $_canUseInternal          = false;
     protected $_canUseForMultishipping  = false;
+    protected $_canRefund = true;
+    protected $_canRefundInvoicePartial = true;
 
     /**
      * Method to check yehhpay payment method rendering on checkout form

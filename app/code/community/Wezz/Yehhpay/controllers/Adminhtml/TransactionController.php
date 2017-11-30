@@ -18,7 +18,6 @@ class Wezz_Yehhpay_Adminhtml_TransactionController extends Mage_Core_Controller_
             $this->_redirectReferer();
         }
 
-
         Mage::getModel('wezz_yehhpay/api_transaction')->transactionSuspend($transactionId, $suspendDate, $orderId);
 
         $this->_redirectReferer();
