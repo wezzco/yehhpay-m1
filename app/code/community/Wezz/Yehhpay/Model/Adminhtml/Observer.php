@@ -69,4 +69,53 @@ class Wezz_Yehhpay_Model_Adminhtml_Observer
 
         return $order;
     }
+
+    /**
+     * Suspend transaction if order status is holded.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function setSuspendTransaction(Varien_Event_Observer $observer)
+    {
+        $orderId = $observer->getControllerAction()->getRequest()->getParam('order_id');
+
+        if ($orderId) {
+            $order = Mage::getModel('sales/order')->load($orderId);
+
+            if ($order && $order->getPayment()->getMethod() == 'yehhpay') {
+                $transactionId = $order->getPayment()->getYehhpayTransactionId();
+                $orderState = $order->getState();
+                if ($orderState == Mage_Sales_Model_Order::STATE_HOLDED && $transactionId) {
+                    $currentDate = new DateTime();
+                    $currentDate->modify('+8 days');
+                    $futureDate = $currentDate->format('Y-m-d');
+
+                    Mage::getModel('wezz_yehhpay/api_transaction')->transactionSuspend($transactionId, $futureDate, $order->getRealOrderId());
+                }
+            }
+        }
+    }
+
+    /**
+     * Resume transaction if order is unheld.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function resumeSuspendTransaction(Varien_Event_Observer $observer)
+    {
+        $orderId = $observer->getControllerAction()->getRequest()->getParam('order_id');
+
+        if ($orderId) {
+            $order = Mage::getModel('sales/order')->load($orderId);
+
+            if ($order && $order->getPayment()->getMethod() == 'yehhpay') {
+                $orderState = $order->getState();
+                $realOrderId = $order->getRealOrderId();
+
+                if ($orderState == Mage_Sales_Model_Order::STATE_PROCESSING && $realOrderId) {
+                    Mage::getModel('wezz_yehhpay/api_transaction')->checkTransactionIsSuspendedAndResume($orderId, $realOrderId);
+                }
+            }
+        }
+    }
 }

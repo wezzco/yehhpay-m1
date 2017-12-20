@@ -98,34 +98,52 @@
             </modules>
         </translate>
 
-                <events>
-                    <sales_order_save_after>
-                        <observers>
-                            <wezz_yehhpay>
-                                <class>wezz_yehhpay/adminhtml_observer</class>
-                                <method>changeOrder</method>
-                            </wezz_yehhpay>
-                        </observers>
-                    </sales_order_save_after>
+        <events>
+            <sales_order_save_after>
+                <observers>
+                    <wezz_yehhpay>
+                        <class>wezz_yehhpay/adminhtml_observer</class>
+                        <method>changeOrder</method>
+                    </wezz_yehhpay>
+                </observers>
+            </sales_order_save_after>
 
-                    <core_block_abstract_to_html_after>
-                        <observers>
-                            <wezz_yehhpay_order_view_info>
-                                <class>wezz_yehhpay/adminhtml_observer</class>
-                                <method>getYehhpayTransactionInfo</method>
-                            </wezz_yehhpay_order_view_info>
-                        </observers>
-                    </core_block_abstract_to_html_after>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <wezz_yehhpay_order_view_info>
+                        <class>wezz_yehhpay/adminhtml_observer</class>
+                        <method>getYehhpayTransactionInfo</method>
+                    </wezz_yehhpay_order_view_info>
+                </observers>
+            </core_block_abstract_to_html_after>
 
-                    <sales_order_creditmemo_save_after>
-                        <observers>
-                            <wezz_yehhpay_order_view_info>
-                                <class>wezz_yehhpay/adminhtml_observer</class>
-                                <method>refundTransaction</method>
-                            </wezz_yehhpay_order_view_info>
-                        </observers>
-                    </sales_order_creditmemo_save_after>
-                </events>
+            <sales_order_creditmemo_save_after>
+                <observers>
+                    <wezz_yehhpay_order_view_info>
+                        <class>wezz_yehhpay/adminhtml_observer</class>
+                        <method>refundTransaction</method>
+                    </wezz_yehhpay_order_view_info>
+                </observers>
+            </sales_order_creditmemo_save_after>
+
+            <controller_action_postdispatch_adminhtml_sales_order_hold>
+                <observers>
+                    <wezz_yehhpay_set_order_hold_date>
+                        <class>wezz_yehhpay/adminhtml_observer</class>
+                        <method>setSuspendTransaction</method>
+                    </wezz_yehhpay_set_order_hold_date>
+                </observers>
+            </controller_action_postdispatch_adminhtml_sales_order_hold>
+
+            <controller_action_postdispatch_adminhtml_sales_order_unhold>
+                <observers>
+                    <wezz_yehhpay_set_order_unhold_date>
+                        <class>wezz_yehhpay/adminhtml_observer</class>
+                        <method>resumeSuspendTransaction</method>
+                    </wezz_yehhpay_set_order_unhold_date>
+                </observers>
+            </controller_action_postdispatch_adminhtml_sales_order_unhold>
+        </events>
 
         <acl>
             <resources>
