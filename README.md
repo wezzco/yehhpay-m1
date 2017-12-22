@@ -5,7 +5,7 @@ With Yehhpay, merchants can offer their customers an convenient post delivery pa
 
 When installing this extension, an additional payment method will be added to your checkout.
 
-In this installation manual we assume you have already got an account with us. If not, you can apply for an account with Yehhpay on https://account.postcode.nl/registreer
+In this installation manual we assume you have already got an account with us. If not, you can apply for an account with Yehhpay on https://account.postcode.nl/aanmelden/yehhpay
 
 The extension was created by Wezz e-Commerce for Yehhpay.
 
