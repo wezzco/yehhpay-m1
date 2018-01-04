@@ -1,0 +1,17 @@
+{
+    "name": "wezz/yehhpay-m1",
+    "type": "magento-module",
+    "description": "Yehhpay Payment Extension For Magento 1",
+    "keywords": ["yehhpay","magento","magento1","m1"],
+    "homepage": "https://github.com/wezzco/yehhpay-m1",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wezz e-Commerce Amsterdam",
+            "email": "info@wezz.co",
+            "homepage": "https://wwww.wezz.co"
+        }
+    ],
+    "require": {},
+    "minimum-stability": "stable"
+}
