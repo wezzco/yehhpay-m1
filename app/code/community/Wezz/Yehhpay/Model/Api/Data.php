@@ -133,6 +133,19 @@ class Wezz_Yehhpay_Model_Api_Data
             }
         }
 
+        if ($order->getDiscountAmount() != 0) {
+            $discountVirtualItem = array(
+                'price' => $order->getDiscountAmount(),
+                'quantity' => '1',
+                'identifier' => 'Discount',
+                'description' => 'Discount Amount'
+            );
+
+            if (isset($transactionData['order']['products'])) {
+                $transactionData['order']['products'][] = $discountVirtualItem;
+            }
+        }
+
         return $transactionData;
     }
 
