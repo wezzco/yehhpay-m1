@@ -9,7 +9,7 @@ In this installation manual we assume you have already got an account with us. I
 
 The extension was created by Wezz e-Commerce for Yehhpay.
 
-__Yehhpay Magento 2 Extension__
+__Looking for the Yehhpay Magento 2 Extension?__
 
 https://www.wezz.co/extensions/yehhpay
 
